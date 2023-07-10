@@ -11,11 +11,11 @@ namespace ApiCrud.DataAccess
 {
     public class HotelDbContext:DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public HotelDbContext(DbContextOptions<HotelDbContext> options):base(options)
         {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=DESKTOP-IL6RP3E\\SQLEXPRESS;Database=Hotel;Trusted_Connection=True;");            
         }
+
         public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<Car> Cars { get; set; }
     }
 }

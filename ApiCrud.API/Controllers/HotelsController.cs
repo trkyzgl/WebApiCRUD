@@ -12,18 +12,18 @@ namespace ApiCrud.API.Controllers
     {
         private IHotelService _hotelService;
 
-        public HotelsController()
+        public HotelsController(IHotelService hotelService)
         {
-            _hotelService = new HotelManager();
+            _hotelService = hotelService;
         }
 
-        [HttpGet]
+        [HttpGet("hotellist")]
         public List<Hotel> Get()
         {
             return _hotelService.GetAllHotels();
         }
-        [HttpGet("{id}")]
-        public Hotel Get(int id)
+        [HttpGet("getHotelById/{id}")]
+        public Hotel GetHotelById(int id)
         {
             return _hotelService.GetHotelById(id);
         }

@@ -1,5 +1,6 @@
 ﻿using ApiCrud.DataAccess.Abstract;
 using ApiCrud.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,55 +11,41 @@ namespace ApiCrud.DataAccess.Concrete
 {
     public class HotelRepository : IHotelRepository
     {
+        private HotelDbContext _context;
+        public HotelRepository(HotelDbContext dbContext)
+        {
+            _context = dbContext;
+        }
+
         public Hotel CreateHotel(Hotel hotel)
         {
-            using (var hotelDbContext = new HotelDbContext())
-            {
-                hotelDbContext.Hotels.Add(hotel);
-                hotelDbContext.SaveChanges();   
-                return hotel;
-
-            }
-            
+            _context.Hotels.Add(hotel);
+            _context.SaveChanges();
+            return hotel;
         }
 
         public void DeleteHotel(int id)
         {
-            using (var hotelDbContext = new HotelDbContext())
-            {
-                var deleteHotel = GetHotelsById(id);
-                hotelDbContext.Hotels.Remove(deleteHotel);  
-                
-                hotelDbContext.SaveChanges();   
-            }
-
+            var deleteHotel = GetHotelsById(id);
+            _context.Hotels.Remove(deleteHotel);
+            _context.SaveChanges();
         }
 
         public List<Hotel> GetAllHotels()
         {
-            using (var hotelDbContext = new HotelDbContext() )
-            {
-                return hotelDbContext.Hotels.ToList();
-            }
+            return _context.Hotels.ToList();
         }
 
         public Hotel GetHotelsById(int id)
         {
-            using (var hotelDbContext = new HotelDbContext())
-            {
-                return hotelDbContext.Hotels.Find(id);
-            }
+            return _context.Hotels.Find(id);
         }
 
         public Hotel UpdateHotel(Hotel hotel)
         {
-            using (var hotelDbContext = new HotelDbContext())
-            {
-                hotelDbContext.Hotels.Update(hotel);
-                hotelDbContext.SaveChanges();
-                return hotel;
-
-            }
+            _context.Hotels.Update(hotel);
+            _context.SaveChanges();
+            return hotel;
         }
     }
 }
